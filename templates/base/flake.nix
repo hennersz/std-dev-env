@@ -6,15 +6,15 @@
   };
 
   outputs = { self, std-dev-env, nixpkgs, flake-utils, ... }@inputs:
-  flake-utils.lib.eachDefaultSystem (system:
-  let
-    pkgs = import nixpkgs {
-      inherit system;
-    };
-  in
-  {
-    devShells.default = std-dev-env.lib.base {
-      inherit pkgs inputs;
-    };
-  });
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs {
+          inherit system;
+        };
+      in
+      {
+        devShells.default = std-dev-env.lib.base {
+          inherit pkgs inputs;
+        };
+      });
 }

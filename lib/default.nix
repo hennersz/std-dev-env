@@ -1,6 +1,6 @@
-{ devenv }: 
+{ devenv }:
 let
-  mkShell = devenv.lib.mkShell;
+  inherit (devenv.lib) mkShell;
 in
 {
   base = import ./base.nix mkShell;
