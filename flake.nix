@@ -30,10 +30,14 @@
               nixpkgs-fmt
             ];
             scripts.lint.exec = ''
-              statix check $DEVENV_ROOT
-              nixpkgs-fmt --check ./**/*.nix
+              shopt -s globstar
+              statix check "$DEVENV_ROOT"
+              nixpkgs-fmt --check "$DEVENV_ROOT"/**/*.nix
             '';
-            scripts.format.exec = "nixpkgs-fmt ./**/*.nix";
+            scripts.format.exec = ''
+              shopt -s globstar
+              nixpkgs-fmt "$DEVENV_ROOT"/**/*.nix
+            '';
           };
         }) // {
       templates = {
