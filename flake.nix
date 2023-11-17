@@ -21,24 +21,7 @@
           };
         in
         {
-          devShells.default = self.lib.base {
-            inherit pkgs inputs;
-            packages = with pkgs; [
-              nixVersions.nix_2_17
-              statix
-              nil
-              nixpkgs-fmt
-            ];
-            scripts.lint.exec = ''
-              shopt -s globstar
-              statix check "$DEVENV_ROOT"
-              nixpkgs-fmt --check "$DEVENV_ROOT"/**/*.nix
-            '';
-            scripts.format.exec = ''
-              shopt -s globstar
-              nixpkgs-fmt "$DEVENV_ROOT"/**/*.nix
-            '';
-          };
+          devShells.default = self.lib.nix { inherit pkgs inputs; };
         }) // {
       templates = {
         base = {
