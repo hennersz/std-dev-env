@@ -3,6 +3,10 @@
     devenv.url = "github:cachix/devenv/v0.6.3";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    poetry2nix = {
+      url = "github:nix-community/poetry2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   description = ''
@@ -12,7 +16,7 @@
     or framework you are using.
   '';
 
-  outputs = { self, nixpkgs, flake-utils, devenv, ... }@inputs:
+  outputs = { self, nixpkgs, flake-utils, devenv, poetry2nix, ... }@inputs:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
@@ -21,15 +25,19 @@
           };
         in
         {
-          devShells.default = self.lib.nix { inherit pkgs inputs; };
+          devShells.default = self.lib.nix { inherit pkgs inputs; packages = with pkgs; [ poetry ]; };
         }) // {
       templates = {
         base = {
           description = "basic development environment with no preinstalled tools";
           path = ./templates/base;
         };
+        python = {
+          description = "basic development environment for python using poetry";
+          path = ./templates/python;
+        };
       };
 
-      lib = import ./lib { inherit devenv; };
+      lib = import ./lib { inherit devenv poetry2nix; };
     };
 }

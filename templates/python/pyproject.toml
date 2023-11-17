@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["Henry Mortimer <henry@morti.net>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[tool.poetry.scripts]
+cli = 'app.main:main'
+
+[tool.poetry.group.dev.dependencies]
+flake8 = "^6.1.0"
+pytest = "^7.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
