@@ -35,7 +35,7 @@ let
   };
 
   nixPkgs = with pkgs; [
-    nixVersions.nix_2_17
+    nixVersions.nix_2_19
     statix
     nil
     nixpkgs-fmt
