@@ -33,7 +33,7 @@ let
     clean.exec = "echo clean not implemented; exit 1";
     upgrade.exec = "upgrade-nix";
     upgrade-nix.exec = "nix flake update";
-    format.exec = "format not implemented; exit 1";
+    format.exec = "echo format not implemented; exit 1";
   };
 in
 mkShell {
