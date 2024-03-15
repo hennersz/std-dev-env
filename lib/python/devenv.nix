@@ -39,7 +39,7 @@ let
       upgrade-python
     '';
     lint.exec = ''
-      ruff
+      ruff check
     '';
     format.exec = ''
       ruff format

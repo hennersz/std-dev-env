@@ -1,0 +1,6 @@
+.devenv
+.direnv
+.ruff_cache
+result
+__pycache__
+.pytest_cache
