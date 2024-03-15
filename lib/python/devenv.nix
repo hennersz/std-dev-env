@@ -65,6 +65,7 @@ base {
     processes
     services
     starship
+    modules
     ;
   packages = packages ++ pythonPkgs;
   scripts = pythonScripts // scripts;

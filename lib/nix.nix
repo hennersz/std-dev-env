@@ -62,6 +62,7 @@ base {
     processes
     services
     starship
+    modules
     ;
   packages = packages ++ nixPkgs;
   scripts = nixScripts // scripts;
