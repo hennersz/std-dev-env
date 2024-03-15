@@ -50,7 +50,6 @@ base {
     devcontainer
     devenv
     difftastic
-    enterShell
     env
     hosts
     hostsProfileName
@@ -66,4 +65,9 @@ base {
     ;
   packages = packages ++ nixPkgs;
   scripts = nixScripts // scripts;
+
+  # Nix breaks if this is set as it can't find shared libraries
+  enterShell = ''
+    unset LD_LIBRARY_PATH 
+  '' ++ enterShell;
 }
