@@ -39,7 +39,10 @@ let
       upgrade-python
     '';
     lint.exec = ''
-      flake8
+      ruff
+    '';
+    format.exec = ''
+      ruff format
     '';
     tests.exec = "pytest";
   };

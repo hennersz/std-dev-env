@@ -12,7 +12,7 @@ python = "^3.11"
 cli = 'app.main:main'
 
 [tool.poetry.group.dev.dependencies]
-flake8 = "^6.1.0"
+ruff = "0.2.2"
 pytest = "^7.4.2"
 
 [build-system]
