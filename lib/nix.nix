@@ -23,19 +23,27 @@ base: { pkgs
       }:
 let
   nixScripts = {
-    lint.exec = ''
+    nix-lint.exec = ''
       shopt -s globstar
       statix check "$DEVENV_ROOT"
       nixpkgs-fmt --check "$DEVENV_ROOT"/**/*.nix
     '';
-    format.exec = ''
+
+    lint.exec = ''
+      nix-lint
+    '';
+
+    nix-format.exec = ''
       shopt -s globstar
       nixpkgs-fmt "$DEVENV_ROOT"/**/*.nix
+    '';
+    format.exec = ''
+      nix-format
     '';
   };
 
   nixPkgs = with pkgs; [
-    nixVersions.nix_2_19
+    nix
     statix
     nil
     nixpkgs-fmt
