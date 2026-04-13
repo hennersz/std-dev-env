@@ -16,7 +16,7 @@ myapp = 'app.main:main'
 
 [tool.poetry.group.dev.dependencies]
 ruff = "0.2.2"
-pytest = "^7.4.2"
+pytest = "^9.0.3"
 
 [build-system]
 requires = ["poetry-core"]
