@@ -23,12 +23,18 @@
                                   }:
 let
   inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; }) mkPoetryEnv;
-  pythonEnv = mkPoetryEnv { projectDir = self; };
+  pythonEnv = mkPoetryEnv {
+    projectDir = self;
+    groups = [ "main" ];
+    checkGroups = [ ];
+  };
   pythonPkgs = with pkgs; [
     poetry
     pythonEnv
+    python3Packages.ruff
+    python3Packages.pytest
   ];
-  pythonScripts = readScripts ./scripts;
+  pythonScripts = readScripts { dir = ./scripts; };
 in
 nix.devenv {
   inherit

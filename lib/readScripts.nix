@@ -1,11 +1,11 @@
-dir:
+{ dir, prefix ? "" }:
 let
   entries = builtins.readDir dir;
   scriptName = name:
     let
       m = builtins.match "(.*)\\.sh" name;
     in
-    if m == null then name else builtins.elemAt m 0;
+    prefix + (if m == null then name else builtins.elemAt m 0);
 in
 builtins.foldl'
   (acc: name:

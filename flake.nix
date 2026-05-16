@@ -23,19 +23,13 @@
           pkgs = import nixpkgs {
             inherit system;
           };
-        in
-        let
-          templatesTest = pkgs.runCommand "std-dev-env-templates-test" {
-            nativeBuildInputs = [ pkgs.nix ];
-          } ''
-            export REPO_ROOT=${./.}
-            ${pkgs.bash}/bin/bash ${./tests/templates.sh}
-            touch $out
-          '';
+
+          tasks = self.lib.readScripts { dir = ./scripts; };
+          testScripts = self.lib.readScripts { dir = ./tests; prefix = "test-"; };
+          scripts = tasks // testScripts;
         in
         {
-          devShells.default = self.lib.nix.devenv { inherit pkgs inputs; packages = with pkgs; [ poetry ]; };
-          checks.templates = templatesTest;
+          devShells.default = self.lib.nix.devenv { inherit pkgs inputs scripts; packages = with pkgs; [ poetry ]; };
         }) // {
       templates = {
         base = {

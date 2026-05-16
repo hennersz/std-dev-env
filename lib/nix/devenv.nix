@@ -21,7 +21,7 @@
                        , modules ? [ ]
                        }:
 let
-  nixScripts = readScripts ./scripts;
+  nixScripts = readScripts { dir = ./scripts; };
 
   nixPkgs = with pkgs; [
     nix

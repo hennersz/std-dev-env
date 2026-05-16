@@ -21,7 +21,7 @@
                           , modules ? [ ]
                           }:
 let
-  stdScripts = readScripts ./scripts;
+  stdScripts = readScripts { dir = ./scripts; };
 in
 mkShell {
   inherit pkgs inputs;
