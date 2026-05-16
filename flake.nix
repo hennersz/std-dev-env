@@ -24,13 +24,27 @@
             inherit system;
           };
         in
+        let
+          templatesTest = pkgs.runCommand "std-dev-env-templates-test" {
+            nativeBuildInputs = [ pkgs.nix ];
+          } ''
+            export REPO_ROOT=${./.}
+            ${pkgs.bash}/bin/bash ${./tests/templates.sh}
+            touch $out
+          '';
+        in
         {
           devShells.default = self.lib.nix.devenv { inherit pkgs inputs; packages = with pkgs; [ poetry ]; };
+          checks.templates = templatesTest;
         }) // {
       templates = {
         base = {
           description = "basic development environment with no preinstalled tools";
           path = ./templates/base;
+        };
+        nix = {
+          description = "development environment for nix projects";
+          path = ./templates/nix;
         };
         python = {
           description = "basic development environment for python using poetry";
