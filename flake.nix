@@ -7,6 +7,10 @@
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    cache-nix-action = {
+      url = "github:nix-community/cache-nix-action/v7";
+      flake = false;
+    };
   };
 
   description = ''
@@ -16,7 +20,7 @@
     or framework you are using.
   '';
 
-  outputs = { self, nixpkgs, flake-utils, devenv, poetry2nix, ... }@inputs:
+  outputs = { self, nixpkgs, flake-utils, devenv, poetry2nix, cache-nix-action, ... }@inputs:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
@@ -27,9 +31,23 @@
           tasks = self.lib.readScripts { dir = ./scripts; };
           testScripts = self.lib.readScripts { dir = ./tests; prefix = "test-"; };
           scripts = tasks // testScripts;
+
+          devShells.default = self.lib.nix.devenv { inherit pkgs inputs scripts; packages = with pkgs; [ poetry ]; };
+          saveFromGC =
+            (import "${cache-nix-action}/saveFromGC.nix" {
+              inherit pkgs inputs;
+              inputsInclude = [
+                "nixpkgs"
+                "flake-utils"
+                "devenv"
+                "poetry2nix"
+              ];
+              derivations = [ devShells.default ];
+            }).package;
         in
         {
-          devShells.default = self.lib.nix.devenv { inherit pkgs inputs scripts; packages = with pkgs; [ poetry ]; };
+          inherit devShells;
+          packages.saveFromGC = saveFromGC;
         }) // {
       templates = {
         base = {

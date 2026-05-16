@@ -1,5 +1,22 @@
 {
   "nodes": {
+    "cache-nix-action": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1769805516,
+        "narHash": "sha256-+nLCogBb3eXaL/YPigD7TiuHR0HTBdyYzEL16Tc3T1k=",
+        "owner": "nix-community",
+        "repo": "cache-nix-action",
+        "rev": "7df957e333c1e5da7721f60227dbba6d06080569",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "v7",
+        "repo": "cache-nix-action",
+        "type": "github"
+      }
+    },
     "cachix": {
       "inputs": {
         "devenv": [
@@ -961,6 +978,7 @@
     },
     "root": {
       "inputs": {
+        "cache-nix-action": "cache-nix-action",
         "devenv": "devenv",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs_7",
