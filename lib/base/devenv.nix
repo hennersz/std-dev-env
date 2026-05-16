@@ -22,6 +22,17 @@
                           }:
 let
   stdScripts = readScripts { dir = ./scripts; };
+  stdGitHooks = {
+    enable = true;
+    hooks = {
+      pre-commit = {
+        enable = true;
+        name = "check";
+        entry = "check";
+        pass_filenames = false;
+      };
+    };
+  };
 in
 mkShell {
   inherit pkgs inputs;
@@ -40,13 +51,13 @@ mkShell {
         hostsProfileName
         infoSections
         languages
-        git-hooks
         process
         processes
         services
         starship
         ;
       scripts = stdScripts // scripts;
+      git-hooks = stdGitHooks // git-hooks;
     })
   ] ++ modules;
 }

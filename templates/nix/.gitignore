@@ -2,3 +2,4 @@
 .direnv
 .vscode
 result
+.pre-commit-config.yaml

@@ -32,7 +32,10 @@
           testScripts = self.lib.readScripts { dir = ./tests; prefix = "test-"; };
           scripts = tasks // testScripts;
 
-          devShells.default = self.lib.nix.devenv { inherit pkgs inputs scripts; packages = with pkgs; [ poetry ]; };
+          devShells.default = self.lib.nix.devenv { 
+            inherit pkgs inputs scripts; 
+            packages = with pkgs; [ poetry ]; 
+          };
           saveFromGC =
             (import "${cache-nix-action}/saveFromGC.nix" {
               inherit pkgs inputs;
