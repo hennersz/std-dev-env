@@ -1,9 +1,10 @@
+#!/usr/bin/env bash
 shopt -s globstar nullglob
 scripts=()
 for f in "$DEVENV_ROOT"/**/*.sh "$DEVENV_ROOT"/**/scripts/*; do
 	[[ -f "$f" ]] && scripts+=("$f")
 done
 if ((${#scripts[@]})); then
-	shellcheck --shell=bash "${scripts[@]}"
-	shfmt -d -ln bash "${scripts[@]}"
+	shellcheck "${scripts[@]}"
+	shfmt -d "${scripts[@]}"
 fi

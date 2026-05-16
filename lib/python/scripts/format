@@ -1,2 +1,4 @@
+#!/usr/bin/env bash
 nix-format
 shell-format
+python-format
