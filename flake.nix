@@ -25,7 +25,7 @@
           };
         in
         {
-          devShells.default = self.lib.nix { inherit pkgs inputs; packages = with pkgs; [ poetry ]; };
+          devShells.default = self.lib.nix.devenv { inherit pkgs inputs; packages = with pkgs; [ poetry ]; };
         }) // {
       templates = {
         base = {

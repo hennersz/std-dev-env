@@ -1,0 +1,2 @@
+shopt -s globstar
+nixpkgs-fmt "$DEVENV_ROOT"/**/*.nix

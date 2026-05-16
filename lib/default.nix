@@ -3,7 +3,8 @@ let
   inherit (devenv.lib) mkShell;
 in
 rec {
-  base = import ./base.nix mkShell;
-  nix = import ./nix.nix base;
-  python = import ./python { inherit nix poetry2nix; };
+  readScripts = import ./readScripts.nix;
+  base = import ./base { inherit readScripts mkShell; };
+  nix = import ./nix { inherit readScripts base; };
+  python = import ./python { inherit nix poetry2nix readScripts; };
 }

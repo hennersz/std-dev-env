@@ -1,0 +1,2 @@
+echo lint not implemented
+exit 1

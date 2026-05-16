@@ -1,0 +1,3 @@
+shopt -s globstar
+statix check "$DEVENV_ROOT"
+nixpkgs-fmt --check "$DEVENV_ROOT"/**/*.nix

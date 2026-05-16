@@ -13,7 +13,7 @@
         };
       in
       {
-        devShells.default = std-dev-env.lib.base.devenv {
+        devShells.default = std-dev-env.lib.nix.devenv {
           inherit pkgs inputs;
         };
       });

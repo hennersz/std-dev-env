@@ -1,0 +1,8 @@
+shopt -s globstar nullglob
+scripts=()
+for f in "$DEVENV_ROOT"/**/*.sh "$DEVENV_ROOT"/**/scripts/*; do
+	[[ -f "$f" ]] && scripts+=("$f")
+done
+if ((${#scripts[@]})); then
+	shfmt -w -ln bash "${scripts[@]}"
+fi
