@@ -1,4 +1,4 @@
-{ base, poetry2nix }: { pkgs
+{ nix, poetry2nix }: { pkgs
                       , inputs
                       , self
                       , scripts ? { }
@@ -14,9 +14,8 @@
                       , hostsProfileName ? ""
                       , infoSections ? { }
                       , languages ? { }
-                      , pre-commit ? { }
+                      , git-hooks ? { }
                       , process ? { }
-                      , process-managers ? { }
                       , processes ? { }
                       , services ? { }
                       , starship ? { }
@@ -47,7 +46,7 @@ let
     tests.exec = "pytest";
   };
 in
-base {
+nix {
   inherit
     pkgs
     inputs
@@ -62,9 +61,8 @@ base {
     hostsProfileName
     infoSections
     languages
-    pre-commit
+    git-hooks
     process
-    process-managers
     processes
     services
     starship

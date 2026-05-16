@@ -13,9 +13,8 @@ base: { pkgs
       , hostsProfileName ? ""
       , infoSections ? { }
       , languages ? { }
-      , pre-commit ? { }
+      , git-hooks ? { }
       , process ? { }
-      , process-managers ? { }
       , processes ? { }
       , services ? { }
       , starship ? { }
@@ -63,9 +62,8 @@ base {
     hostsProfileName
     infoSections
     languages
-    pre-commit
+    git-hooks
     process
-    process-managers
     processes
     services
     starship

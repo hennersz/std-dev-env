@@ -13,9 +13,8 @@ mkShell: { pkgs
          , hostsProfileName ? ""
          , infoSections ? { }
          , languages ? { }
-         , pre-commit ? { }
+         , git-hooks ? { }
          , process ? { }
-         , process-managers ? { }
          , processes ? { }
          , services ? { }
          , starship ? { }
@@ -53,9 +52,8 @@ mkShell {
         hostsProfileName
         infoSections
         languages
-        pre-commit
+        git-hooks
         process
-        process-managers
         processes
         services
         starship

@@ -5,5 +5,5 @@ in
 rec {
   base = import ./base.nix mkShell;
   nix = import ./nix.nix base;
-  python = import ./python { inherit base poetry2nix; };
+  python = import ./python { inherit nix poetry2nix; };
 }
