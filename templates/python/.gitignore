@@ -4,3 +4,4 @@
 result
 __pycache__
 .pytest_cache
+.pre-commit-config.yaml
