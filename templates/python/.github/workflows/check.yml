@@ -1,0 +1,29 @@
+name: Check
+
+# PR checks: for branches in this repo, pushes to the PR branch show on the PR.
+# Fork PRs need pull_request (or similar) — pushes only hit the fork, not this repo.
+on:
+  push:
+    branches: ['**']
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Nix
+        uses: ./.github/actions/setup-nix
+
+      - name: Check
+        run: nix develop --impure --command check

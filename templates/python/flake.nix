@@ -3,21 +3,42 @@
     std-dev-env.url = "github:hennersz/std-dev-env";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    cache-nix-action = {
+      url = "github:nix-community/cache-nix-action/v7";
+      flake = false;
+    };
   };
 
-  outputs = { self, std-dev-env, nixpkgs, flake-utils, ... }@inputs:
+  outputs = { self, std-dev-env, nixpkgs, flake-utils, cache-nix-action, ... }@inputs:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
           inherit system;
         };
         inherit (std-dev-env.lib.python.mkPoetry2Nix pkgs) mkPoetryApplication;
-      in
-      {
+
         devShells.default = std-dev-env.lib.python.devenv {
           inherit pkgs inputs self;
         };
 
-        packages.default = mkPoetryApplication { projectDir = self; };
+        defaultPackage = mkPoetryApplication { projectDir = self; };
+
+        saveFromGC =
+          (import "${cache-nix-action}/saveFromGC.nix" {
+            inherit pkgs inputs;
+            inputsInclude = [
+              "nixpkgs"
+              "flake-utils"
+              "std-dev-env"
+            ];
+            derivations = [ devShells.default ];
+          }).package;
+      in
+      {
+        inherit devShells;
+        packages = {
+          default = defaultPackage;
+          inherit saveFromGC;
+        };
       });
 }
