@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+found=0
+while IFS= read -r lockfile; do
+	found=1
+	mod=$(dirname "$lockfile")
+	echo "Upgrading OpenTofu dependencies in ${mod}..."
+	(cd "$mod" && tofu init -upgrade -input=false)
+done < <(find . -name '.terraform.lock.hcl' -not -path '*/.git/*' -not -path '*/.terraform/*')
+
+if [[ $found -eq 0 ]]; then
+	echo "No .terraform.lock.hcl files found"
+fi

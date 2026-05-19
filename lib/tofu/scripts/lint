@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+nix-lint
+shell-lint
+tofu-lint

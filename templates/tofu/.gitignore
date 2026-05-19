@@ -1,0 +1,8 @@
+.devenv
+.direnv
+.vscode
+result
+.pre-commit-config.yaml
+.terraform/
+*.tfstate
+*.tfstate.*
