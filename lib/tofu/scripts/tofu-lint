@@ -1,0 +1,15 @@
+#! /usr/bin/env bash
+set -euo pipefail
+
+echo "Checking OpenTofu formatting..."
+tofu fmt -check -recursive $DEVENV_ROOT
+echo "All files formatted correctly."
+
+echo "Checking OpenTofu linting..."
+tflint --chdir=$DEVENV_ROOT --init
+tflint --chdir=$DEVENV_ROOT --recursive
+echo "tflint passed."
+
+echo "Checking OpenTofu security..."
+tfsec "$DEVENV_ROOT"
+echo "tfsec passed."

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+nix-format
+shell-format
+tofu fmt -recursive "$DEVENV_ROOT"
