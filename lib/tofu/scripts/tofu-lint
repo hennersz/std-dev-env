@@ -11,5 +11,9 @@ tflint --chdir="$DEVENV_ROOT" --recursive
 echo "tflint passed."
 
 echo "Checking OpenTofu security..."
-tfsec "$DEVENV_ROOT"
+tfsec_args=("$DEVENV_ROOT")
+for path in .git .devenv .direnv .terraform node_modules result; do
+	tfsec_args+=(--exclude-path "$path")
+done
+tfsec "${tfsec_args[@]}"
 echo "tfsec passed."
