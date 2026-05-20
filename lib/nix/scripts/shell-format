@@ -1,9 +1,22 @@
 #!/usr/bin/env bash
-shopt -s globstar nullglob
+set -euo pipefail
+
 scripts=()
-for f in "$DEVENV_ROOT"/**/*.sh "$DEVENV_ROOT"/**/scripts/*; do
-	[[ -f "$f" ]] && scripts+=("$f")
-done
+while IFS= read -r -d '' f; do
+	read -r first_line <"$f" || continue
+	[[ "$first_line" =~ ^#![[:space:]]*/.*(ba)?sh ]] || continue
+	scripts+=("$f")
+done < <(
+	find "$DEVENV_ROOT" \
+		\( \
+			-path '*/.git/*' \
+			-o -path '*/.devenv/*' \
+			-o -path '*/.direnv/*' \
+			-o -path '*/.terraform/*' \
+		\) -prune -o \
+		-type f -print0
+)
+
 if ((${#scripts[@]})); then
 	shfmt -w "${scripts[@]}"
 fi
