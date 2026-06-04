@@ -19,6 +19,7 @@
                                   , processes ? { }
                                   , services ? { }
                                   , starship ? { }
+                                  , tasks ? { }
                                   , modules ? [ ]
                                   }:
 let
@@ -56,6 +57,7 @@ nix.devenv {
     processes
     services
     starship
+    tasks
     modules
     ;
   packages = packages ++ pythonPkgs;

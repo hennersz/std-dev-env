@@ -18,6 +18,7 @@
                           , processes ? { }
                           , services ? { }
                           , starship ? { }
+                          , tasks ? { }
                           , modules ? [ ]
                           }:
 let
@@ -55,6 +56,7 @@ mkShell {
         processes
         services
         starship
+        tasks
         ;
       scripts = stdScripts // scripts;
       git-hooks = stdGitHooks // git-hooks;
