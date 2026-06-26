@@ -15,7 +15,7 @@ python = "^3.11"
 myapp = 'app.main:main'
 
 [tool.poetry.group.dev.dependencies]
-ruff = "0.15.17"
+ruff = "0.15.18"
 pytest = "^9.0.3"
 
 [build-system]
