@@ -20,7 +20,7 @@
 #   git-hooks        - { hooks = ...; package = ...; }: extra git-hooks.nix
 #                      hooks merged into the default `check`, and an optional
 #                      pre-commit package override (defaults to pkgs.prek)
-#   tasks            - minimal devenv shell-entry task compatibility (see below)
+#   tasks            - devenv-style task graph run at shell entry (see ../tasks.nix)
 #
 # Unsupported devenv options (containers, devcontainer, services, processes,
 # process, languages, starship, difftastic, hosts, hostsProfileName,
@@ -80,23 +80,10 @@ let
       (name: value: "export ${name}=${lib.escapeShellArg (toString value)}")
       env);
 
-  # devenv compatibility: run tasks whose `before` list contains
-  # "devenv:enterShell" at shell entry, from the project root, before any
-  # caller-provided `enterShell`. No other devenv task-graph behaviour
-  # (after hooks, status checks, arbitrary targets, process orchestration) is
-  # supported.
-  shellEntryTasks = lib.concatStringsSep "\n"
-    (lib.mapAttrsToList
-      (name: task:
-        lib.optionalString (builtins.elem "devenv:enterShell" (task.before or [ ]))
-          ''
-            echo "Running shell-entry task: ${name}"
-            (
-              cd "$PROJECT_ROOT"
-              ${task.exec}
-            )
-          '')
-      tasks);
+  # devenv-style task graph: resolve the full before/after dependency graph and
+  # run, at shell entry (from the project root, before any caller `enterShell`),
+  # every task that must run before "devenv:enterShell". See ../tasks.nix.
+  shellEntryTasks = import ../tasks.nix { inherit lib tasks; };
 in
 pkgs.mkShell {
   packages = packages ++ scriptPackages;

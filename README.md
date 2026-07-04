@@ -107,23 +107,54 @@ git-hooks = {
 `git-hooks.nix` writes a generated `.pre-commit-config.yaml`; this file is
 gitignored (both here and in the templates).
 
-### Shell-entry tasks (devenv compatibility)
+### Tasks (devenv-style task graph)
 
-A minimal subset of devenv tasks is supported: tasks whose `before` list
-contains `"devenv:enterShell"` run at shell entry, from `$PROJECT_ROOT`, before
-any caller-provided `enterShell`.
+Tasks form a dependency graph via `before` / `after`. Every task that must
+(transitively) run before the virtual `"devenv:enterShell"` node is executed at
+shell entry, in dependency order, each from `$PROJECT_ROOT`, before any
+caller-provided `enterShell`.
 
 ```nix
-tasks."node:install" = {
-  exec = ''
-    npm install
-  '';
-  before = [ "devenv:enterShell" ];
+tasks = {
+  # runs at shell entry
+  "node:install" = {
+    exec = "npm install";
+    before = [ "devenv:enterShell" ];
+  };
+
+  # pulled in as a dependency of node:install and ordered before it
+  "node:clean" = {
+    exec = "rm -rf node_modules/.cache";
+    before = [ "node:install" ];
+  };
+
+  # only runs if the status command fails (skipped when it succeeds)
+  "assets:fetch" = {
+    exec = "./fetch-assets.sh";
+    after = [ "node:install" ];
+    before = [ "devenv:enterShell" ];
+    status = "test -d assets";
+  };
 };
 ```
 
-No other devenv task-graph behaviour is supported (`after` hooks, status
-checks, arbitrary targets, process orchestration).
+Task names are **namespaced** like devenv — `<namespace>:<name>` (e.g.
+`node:install`); a non-namespaced name is a Nix evaluation error. The virtual
+lifecycle hooks live in the `devenv:` namespace (e.g. `devenv:enterShell`).
+
+Each task is `{ exec, before ? [ ], after ? [ ], status ? null }`:
+
+- `before` — task / lifecycle names this task must run **before**
+- `after` — task / lifecycle names this task must run **after**
+- `status` — optional shell command; if it succeeds the task is **skipped**
+
+Each task logs `std-dev-env: running task '<name>'` (or a skip line) as it runs.
+
+The full before/after graph is resolved (topologically sorted) at evaluation
+time; **cycles are a Nix evaluation error**, and unknown task references or
+unsupported task fields are rejected. Tasks not connected to
+`"devenv:enterShell"` are not run — there is no separate task-runner CLI, only
+the shell-entry lifecycle.
 
 ## Unsupported devenv features
 
@@ -135,11 +166,14 @@ services            processes           process
 containers          devcontainer        languages
 starship            difftastic          hosts / hostsProfileName
 certificates        modules             infoSections
-full task graph     devenv up
+devenv up
 ```
 
-The `up` script now prints an error and exits non-zero; use a project-specific
-process runner or service manager instead.
+Task graph support is limited to the shell-entry lifecycle: there is no
+task-runner CLI, and lifecycle hooks other than `"devenv:enterShell"` (e.g.
+`"devenv:enterTest"`) are not executed. The `up` script now prints an error and
+exits non-zero; use a project-specific process runner or service manager
+instead.
 
 ## `cacheRoots`
 
