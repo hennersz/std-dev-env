@@ -1,8 +1,11 @@
 {
   inputs = {
-    devenv.url = "github:cachix/devenv";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    git-hooks = {
+      url = "github:cachix/git-hooks.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     poetry2nix = {
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -14,13 +17,13 @@
   };
 
   description = ''
-    A nix flake that wraps devenv with a standardised
-    set of commands so the dx of testing and running a 
+    A nix flake that provides a standardised set of commands
+    on top of pkgs.mkShell so the dx of testing and running a
     project is largely the same regardless of the language
     or framework you are using.
   '';
 
-  outputs = { self, nixpkgs, flake-utils, devenv, poetry2nix, cache-nix-action, ... }@inputs:
+  outputs = { self, nixpkgs, flake-utils, git-hooks, poetry2nix, cache-nix-action, ... }@inputs:
     flake-utils.lib.eachDefaultSystem
       (system:
         let
@@ -41,7 +44,7 @@
             inputsInclude = [
               "nixpkgs"
               "flake-utils"
-              "devenv"
+              "git-hooks"
               "poetry2nix"
             ];
             derivations = [ devShells.default ];
@@ -70,6 +73,6 @@
         };
       };
 
-      lib = import ./lib { inherit devenv poetry2nix cache-nix-action; };
+      lib = import ./lib { inherit poetry2nix cache-nix-action git-hooks; };
     };
 }

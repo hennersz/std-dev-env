@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 shopt -s globstar
-statix check "$DEVENV_ROOT"
-nixpkgs-fmt --check "$DEVENV_ROOT"/**/*.nix
+statix check "$PROJECT_ROOT"
+nixpkgs-fmt --check "$PROJECT_ROOT"/**/*.nix

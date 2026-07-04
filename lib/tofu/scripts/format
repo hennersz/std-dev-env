@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 nix-format
 shell-format
-tofu fmt -recursive "$DEVENV_ROOT"
+tofu fmt -recursive "$PROJECT_ROOT"
