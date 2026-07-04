@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-devenv up
+echo "'up' is no longer supported because std-dev-env no longer depends on devenv process management." >&2
+echo "Use a project-specific process runner or service manager instead." >&2
+exit 1

@@ -7,7 +7,7 @@ while IFS= read -r main; do
 	mod=$(dirname "$main")
 	echo "Validating ${mod}..."
 	(cd "$mod" && tofu init -backend=false -reconfigure -input=false >/dev/null && tofu validate)
-done < <(find . -name 'main.tf' -not -path '*/.git/*' -not -path '*/.terraform/*' -not -path '*/.devenv/*' -not -path '*/.direnv/*' -not -path '*/.vscode/*' -not -path '*/.github/*')
+done < <(find . -name 'main.tf' -not -path '*/.git/*' -not -path '*/.terraform/*' -not -path '*/.direnv/*' -not -path '*/.vscode/*' -not -path '*/.github/*')
 
 if [[ $found -eq 0 ]]; then
 	echo "No main.tf files found"

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-repo_root="${DEVENV_ROOT:-${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}}"
+repo_root="${PROJECT_ROOT:-${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}}"
 templates_dir="${repo_root}/templates"
 
 shopt -s nullglob
@@ -21,7 +21,7 @@ for dir in "${templates[@]}"; do
 	cd "$tmpdir"
 	nix flake init -t "path:${repo_root}#${template}"
 
-	nix develop --no-pure-eval \
+	nix develop \
 		--override-input std-dev-env "path:${repo_root}" \
 		-c check
 

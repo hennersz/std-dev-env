@@ -1,26 +1,15 @@
-{ nix, readScripts }: { pkgs
-                      , inputs
-                      , scripts ? { }
-                      , packages ? [ ]
-                      , certificates ? [ ]
-                      , containers ? { }
-                      , devcontainer ? { }
-                      , devenv ? { }
-                      , difftastic ? { }
-                      , enterShell ? ""
-                      , env ? { }
-                      , hosts ? { }
-                      , hostsProfileName ? ""
-                      , infoSections ? { }
-                      , languages ? { }
-                      , git-hooks ? { }
-                      , process ? { }
-                      , processes ? { }
-                      , services ? { }
-                      , starship ? { }
-                      , tasks ? { }
-                      , modules ? [ ]
-                      }:
+{ nix, readScripts }:
+{ pkgs
+, inputs ? { }
+, scripts ? { }
+, packages ? [ ]
+, nativeBuildInputs ? [ ]
+, enterShell ? ""
+, shellHook ? ""
+, env ? { }
+, git-hooks ? { }
+, tasks ? { }
+}:
 let
   tofuPkgs = with pkgs; [
     opentofu
@@ -33,24 +22,12 @@ nix.devenv {
   inherit
     pkgs
     inputs
-    certificates
-    containers
-    devcontainer
-    devenv
-    difftastic
     enterShell
+    shellHook
     env
-    hosts
-    hostsProfileName
-    infoSections
-    languages
     git-hooks
-    process
-    processes
-    services
-    starship
     tasks
-    modules
+    nativeBuildInputs
     ;
   packages = packages ++ tofuPkgs;
   scripts = tofuScripts // scripts;

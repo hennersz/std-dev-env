@@ -31,4 +31,4 @@ runs:
 
     - name: Root CI store paths for cache
       shell: bash
-      run: nix profile add --impure .#cacheRoots
+      run: nix profile add .#cacheRoots

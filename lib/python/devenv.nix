@@ -1,27 +1,16 @@
-{ nix, poetry2nix, readScripts }: { pkgs
-                                  , inputs
-                                  , self
-                                  , scripts ? { }
-                                  , packages ? [ ]
-                                  , certificates ? [ ]
-                                  , containers ? { }
-                                  , devcontainer ? { }
-                                  , devenv ? { }
-                                  , difftastic ? { }
-                                  , enterShell ? ""
-                                  , env ? { }
-                                  , hosts ? { }
-                                  , hostsProfileName ? ""
-                                  , infoSections ? { }
-                                  , languages ? { }
-                                  , git-hooks ? { }
-                                  , process ? { }
-                                  , processes ? { }
-                                  , services ? { }
-                                  , starship ? { }
-                                  , tasks ? { }
-                                  , modules ? [ ]
-                                  }:
+{ nix, poetry2nix, readScripts }:
+{ pkgs
+, self
+, inputs ? { }
+, scripts ? { }
+, packages ? [ ]
+, nativeBuildInputs ? [ ]
+, enterShell ? ""
+, shellHook ? ""
+, env ? { }
+, git-hooks ? { }
+, tasks ? { }
+}:
 let
   inherit (poetry2nix.lib.mkPoetry2Nix { inherit pkgs; }) mkPoetryEnv;
   pythonEnv = mkPoetryEnv {
@@ -41,24 +30,12 @@ nix.devenv {
   inherit
     pkgs
     inputs
-    certificates
-    containers
-    devcontainer
-    devenv
-    difftastic
     enterShell
+    shellHook
     env
-    hosts
-    hostsProfileName
-    infoSections
-    languages
     git-hooks
-    process
-    processes
-    services
-    starship
     tasks
-    modules
+    nativeBuildInputs
     ;
   packages = packages ++ pythonPkgs;
   scripts = pythonScripts // scripts;

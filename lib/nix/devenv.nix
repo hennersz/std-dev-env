@@ -1,26 +1,15 @@
-{ readScripts, base }: { pkgs
-                       , inputs
-                       , scripts ? { }
-                       , packages ? [ ]
-                       , certificates ? [ ]
-                       , containers ? { }
-                       , devcontainer ? { }
-                       , devenv ? { }
-                       , difftastic ? { }
-                       , enterShell ? ""
-                       , env ? { }
-                       , hosts ? { }
-                       , hostsProfileName ? ""
-                       , infoSections ? { }
-                       , languages ? { }
-                       , git-hooks ? { }
-                       , process ? { }
-                       , processes ? { }
-                       , services ? { }
-                       , starship ? { }
-                       , tasks ? { }
-                       , modules ? [ ]
-                       }:
+{ readScripts, base }:
+{ pkgs
+, inputs ? { }
+, scripts ? { }
+, packages ? [ ]
+, nativeBuildInputs ? [ ]
+, enterShell ? ""
+, shellHook ? ""
+, env ? { }
+, git-hooks ? { }
+, tasks ? { }
+}:
 let
   nixScripts = readScripts { dir = ./scripts; };
 
@@ -37,29 +26,17 @@ base.devenv {
   inherit
     pkgs
     inputs
-    certificates
-    containers
-    devcontainer
-    devenv
-    difftastic
+    nativeBuildInputs
+    shellHook
     env
-    hosts
-    hostsProfileName
-    infoSections
-    languages
     git-hooks
-    process
-    processes
-    services
-    starship
     tasks
-    modules
     ;
   packages = packages ++ nixPkgs;
   scripts = nixScripts // scripts;
 
   # Nix breaks if this is set as it can't find shared libraries
   enterShell = ''
-    unset LD_LIBRARY_PATH 
+    unset LD_LIBRARY_PATH
   '' + enterShell;
 }

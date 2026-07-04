@@ -26,4 +26,4 @@ jobs:
         uses: ./.github/actions/setup-nix
 
       - name: Check
-        run: nix develop --impure --command check
+        run: nix develop --command check

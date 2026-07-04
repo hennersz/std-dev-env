@@ -1,4 +1,4 @@
-{ mkShell, readScripts }:
+{ readScripts, preCommitHooks }:
 {
-  devenv = import ./devenv.nix { inherit readScripts mkShell; };
+  devenv = import ./devenv.nix { inherit readScripts preCommitHooks; };
 }

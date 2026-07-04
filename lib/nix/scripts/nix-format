@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 shopt -s globstar
-nixpkgs-fmt "$DEVENV_ROOT"/**/*.nix
+nixpkgs-fmt "$PROJECT_ROOT"/**/*.nix
