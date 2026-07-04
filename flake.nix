@@ -36,21 +36,20 @@
             inherit pkgs inputs scripts;
             packages = with pkgs; [ poetry ];
           };
-          saveFromGC =
-            (import "${cache-nix-action}/saveFromGC.nix" {
-              inherit pkgs inputs;
-              inputsInclude = [
-                "nixpkgs"
-                "flake-utils"
-                "devenv"
-                "poetry2nix"
-              ];
-              derivations = [ devShells.default ];
-            }).package;
+          cacheRoots = self.lib.cacheRoots {
+            inherit pkgs inputs;
+            inputsInclude = [
+              "nixpkgs"
+              "flake-utils"
+              "devenv"
+              "poetry2nix"
+            ];
+            derivations = [ devShells.default ];
+          };
         in
         {
           inherit devShells;
-          packages.saveFromGC = saveFromGC;
+          packages.cacheRoots = cacheRoots;
         }) // {
       templates = {
         base = {
@@ -71,6 +70,6 @@
         };
       };
 
-      lib = import ./lib { inherit devenv poetry2nix; };
+      lib = import ./lib { inherit devenv poetry2nix cache-nix-action; };
     };
 }

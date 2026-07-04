@@ -22,13 +22,13 @@ runs:
         purge-last-accessed: 1209600
         # Before saving a new cache (primary-key miss), run GC so paths dropped from the flake
         # closure do not stay in the tarball forever. Only unreferenced store paths are removed;
-        # `nix profile add .#saveFromGC` (see flake `packages.saveFromGC`) roots the CI shell + inputs.
+        # `nix profile add .#cacheRoots` (see flake `packages.cacheRoots`) roots the CI shell + inputs.
         #
         # This value is a *ceiling* on store size after that GC (suffix K/M/G required — a bare
         # number is bytes). Lower = smaller cache and faster restore/unzip, but leave headroom
         # above your dev shell closure or saves may omit useful paths. Tune as needed.
         gc-max-store-size-linux: 5G
 
-    - name: Root CI store paths for cache (saveFromGC)
+    - name: Root CI store paths for cache
       shell: bash
-      run: nix profile add --impure .#saveFromGC
+      run: nix profile add --impure .#cacheRoots
