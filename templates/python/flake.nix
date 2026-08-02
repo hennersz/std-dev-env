@@ -1,7 +1,7 @@
 {
   inputs = {
     std-dev-env.url = "github:hennersz/std-dev-env";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.follows = "std-dev-env/nixpkgs";
     flake-utils.url = "github:numtide/flake-utils";
   };
 
