@@ -22,7 +22,7 @@
     },
     {
       "description": "minimumReleaseAge for direct deps only, not lockfile-only changes",
-      "matchUpdateTypes": ["lockFileMaintenance", "lockFileUpdate"],
+      "matchUpdateTypes": ["lockFileMaintenance"],
       "minimumReleaseAge": null,
       "minimumReleaseAgeBehaviour": "timestamp-optional"
     }
